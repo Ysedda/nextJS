@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
+import { User } from './entities/user.model';
+import { FilterService } from './filter/filter.service';
 
-@Controller()
+@Controller('/hello')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly filterService: FilterService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post()
+  getHello(@Body() body: User[], @Query('name') name: string): User[] {
+    return this.filterService.filterUsers(body, name);
   }
 }
